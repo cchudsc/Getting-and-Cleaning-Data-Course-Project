@@ -84,22 +84,49 @@ activity = activity[order(activity$id),]
 ```
 subject = read.table(subjectFile,header=FALSE, col.names=c("subject"))
 ```
-  * Use the cbind function to combine subuject data, activity data and the measures dataset and return the combined dataset
+  * Use the cbind function to combine subject data, activity data and the measures dataset and return the combined dataset
 ```
 data = cbind(subject, "dataset" = dataSetName, "activity_name" = activity$activity_name,data)
 data
 ```
-* Now training dataset is properly formatted and merged with subject and activity data as trainingData, the script would then call the readDataSet(...) function for the testing dataset
+* Now training dataset is properly formatted and merged with subject and activity data which named as trainingData, the script would then call the readDataSet(...) function for the testing dataset
 ```
 #Read and create testing data
 testingData = readDataSet(labels$measure_name, activityLabels, "testing",
                           testingDataFile, testingActivityFile, 
                           testingSubjectFile)
 ```
-* When both training dataset and testing dataset are ready, use the rbind() function to combine both training dataset and testing dataset and generate the result dataset named as "allData"
+* When both training dataset and testing dataset are ready, use the rbind() function to combine both training dataset and testing dataset and generate the result dataset are named as "allData"
 ```
 #combine testing and training dataset
 allData = rbind(trainingData, testingData)
+```
+* format of allData
+```
+> names(allData)
+ [1] "subject"                                          "dataset"                                          "activity_name"                                   
+ [4] "time_body_accelerometer_mean_x"                   "time_body_accelerometer_mean_y"                   "time_body_accelerometer_mean_z"                  
+ [7] "time_body_accelerometer_std_x"                    "time_body_accelerometer_std_y"                    "time_body_accelerometer_std_z"                   
+[10] "time_gravity_accelerometer_mean_x"                "time_gravity_accelerometer_mean_y"                "time_gravity_accelerometer_mean_z"               
+[13] "time_gravity_accelerometer_std_x"                 "time_gravity_accelerometer_std_y"                 "time_gravity_accelerometer_std_z"                
+[16] "time_body_accelerometer_jerk_mean_x"              "time_body_accelerometer_jerk_mean_y"              "time_body_accelerometer_jerk_mean_z"             
+[19] "time_body_accelerometer_jerk_std_x"               "time_body_accelerometer_jerk_std_y"               "time_body_accelerometer_jerk_std_z"              
+[22] "time_body_gyroscope_mean_x"                       "time_body_gyroscope_mean_y"                       "time_body_gyroscope_mean_z"                      
+[25] "time_body_gyroscope_std_x"                        "time_body_gyroscope_std_y"                        "time_body_gyroscope_std_z"                       
+[28] "time_body_gyroscope_jerk_mean_x"                  "time_body_gyroscope_jerk_mean_y"                  "time_body_gyroscope_jerk_mean_z"                 
+[31] "time_body_gyroscope_jerk_std_x"                   "time_body_gyroscope_jerk_std_y"                   "time_body_gyroscope_jerk_std_z"                  
+[34] "time_body_accelerometer_magnitude_mean"           "time_body_accelerometer_magnitude_std"            "time_gravity_accelerometer_magnitude_mean"       
+[37] "time_gravity_accelerometer_magnitude_std"         "time_body_accelerometer_jerk_magnitude_mean"      "time_body_accelerometer_jerk_magnitude_std"      
+[40] "time_body_gyroscope_magnitude_mean"               "time_body_gyroscope_magnitude_std"                "time_body_gyroscope_jerk_magnitude_mean"         
+[43] "time_body_gyroscope_jerk_magnitude_std"           "frequency_body_accelerometer_mean_x"              "frequency_body_accelerometer_mean_y"             
+[46] "frequency_body_accelerometer_mean_z"              "frequency_body_accelerometer_std_x"               "frequency_body_accelerometer_std_y"              
+[49] "frequency_body_accelerometer_std_z"               "frequency_body_accelerometer_jerk_mean_x"         "frequency_body_accelerometer_jerk_mean_y"        
+[52] "frequency_body_accelerometer_jerk_mean_z"         "frequency_body_accelerometer_jerk_std_x"          "frequency_body_accelerometer_jerk_std_y"         
+[55] "frequency_body_accelerometer_jerk_std_z"          "frequency_body_gyroscope_mean_x"                  "frequency_body_gyroscope_mean_y"                 
+[58] "frequency_body_gyroscope_mean_z"                  "frequency_body_gyroscope_std_x"                   "frequency_body_gyroscope_std_y"                  
+[61] "frequency_body_gyroscope_std_z"                   "frequency_body_accelerometer_magnitude_mean"      "frequency_body_accelerometer_magnitude_std"      
+[64] "frequency_body_accelerometer_jerk_magnitude_mean" "frequency_body_accelerometer_jerk_magnitude_std"  "frequency_body_gyroscope_magnitude_mean"         
+[67] "frequency_body_gyroscope_magnitude_std"           "frequency_body_gyroscope_jerk_magnitude_mean"     "frequency_body_gyroscope_jerk_magnitude_std" 
 ```
 6. After "allData" dataset is created, the dataset is grouped by subject and activity_name, all measures data are aggregated by the mean function.
 ```
