@@ -128,19 +128,19 @@ allData = rbind(trainingData, testingData)
 [64] "frequency_body_accelerometer_jerk_magnitude_mean" "frequency_body_accelerometer_jerk_magnitude_std"  "frequency_body_gyroscope_magnitude_mean"         
 [67] "frequency_body_gyroscope_magnitude_std"           "frequency_body_gyroscope_jerk_magnitude_mean"     "frequency_body_gyroscope_jerk_magnitude_std" 
 ```
-6. After "allData" dataset is created, the dataset is grouped by subject and activity_name, all measures data are aggregated by the mean function.
+* After "allData" dataset is created, the dataset is grouped by subject and activity_name, all measures data are aggregated by the mean function.
 ```
 meanBySubjectActivity = aggregate(allData[,4:69],list(allData$subject,allData$activity_name), mean)
 ```
-7. meanBySubjectActivity dataset is renamed to replace the Group.1 and Group.2 column name to "subject" and "activity_name" respectively
+* meanBySubjectActivity dataset is renamed to replace the Group.1 and Group.2 column name to "subject" and "activity_name" respectively
 ```
 meanBySubjectActivity = rename(meanBySubjectActivity,subject=Group.1,activity_name=Group.2)
 ```
-8. The final data is then sort by subject and activity_name
+* The final data is then sort by subject and activity_name
 ```
 meanBySubjectActivity = arrange(meanBySubjectActivity,subject,activity_name)
 ```
-9. Final data is extracted with the write.table() function
+* Final data is extracted with the write.table() function
 ```
 write.table(meanBySubjectActivity,file="mean_by_subject_activity.txt",row.name=FALSE)
 ```
