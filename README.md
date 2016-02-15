@@ -8,7 +8,7 @@
 4. Tidy dataset for average measures group by subject and activity are named as "meanBySubjectActivity"
 
 ##How the run_analysis.R script works
-* The script would define all required file name as variables
+* At beginning of the script it would define all required file name as variables
 ```
 featureFile = "UCI HAR Dataset\\features.txt"
 activityLabelFile = "UCI HAR Dataset\\activity_labels.txt"
@@ -19,7 +19,7 @@ testingDataFile = "UCI HAR Dataset\\test\\X_test.txt"
 testingActivityFile = "UCI HAR Dataset\\test\\y_test.txt"
 testingSubjectFile = "UCI HAR Dataset\\test\\subject_test.txt"
 ```    
-* When the scripts starts, it will check for required files under folder "UCI HAR Dataset, if any of required file is missing, it would download the dataset from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip" and extract the file downloaded in working directory
+* When the scripts starts, it will check for required files under folder "UCI HAR Dataset, if any of the required file is missing, it would download the dataset from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip" and extract the file downloaded in working directory
 ```
 #Download and unzip files
 if (!all(file.exists(c(featureFile,activityLabelFile,
@@ -75,7 +75,7 @@ names(data) <- renameColumns(grep("-mean\\(\\)|-std\\(\\)",measureName,value=TRU
 activity = read.table(activityDataFile,header=FALSE, col.names=c("activity_id"))
 activity$id <- 1:nrow(activity)
 ```
-  * Merge activity data with activity_labels.txt loaded in step 2 to map activity name to the activity dataset. After the merge, the order of the data is changed. So the script need to arrange activity data in ascending order of the id in order to resume original record ordering
+  * Merge activity data with activity_labels.txt loaded in previous steps to map activity name to the activity dataset. Order of activity data would be changed after the merge. So the script need to arrange activity data in ascending order of the id in order to resume original record ordering
 ```
 activity = merge(activity, activityLabels, by.x="activity_id",by.y="activity_id", all=TRUE)
 activity = activity[order(activity$id),]
