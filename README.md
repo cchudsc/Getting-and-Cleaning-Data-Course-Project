@@ -75,7 +75,7 @@ names(data) <- renameColumns(grep("-mean\\(\\)|-std\\(\\)",measureName,value=TRU
 activity = read.table(activityDataFile,header=FALSE, col.names=c("activity_id"))
 activity$id <- 1:nrow(activity)
 ```
-  * Merge activity data with activity_labels.txt loaded in step 2 to map activity name to the activity dataset. After activity name merged, the order of the data is changed. So the script need to arrange activity data in ascending order of the id added in order to resume original record ordering
+  * Merge activity data with activity_labels.txt loaded in step 2 to map activity name to the activity dataset. After the merge, the order of the data is changed. So the script need to arrange activity data in ascending order of the id in order to resume original record ordering
 ```
 activity = merge(activity, activityLabels, by.x="activity_id",by.y="activity_id", all=TRUE)
 activity = activity[order(activity$id),]
@@ -89,11 +89,31 @@ subject = read.table(subjectFile,header=FALSE, col.names=c("subject"))
 data = cbind(subject, "dataset" = dataSetName, "activity_name" = activity$activity_name,data)
 data
 ```
-4. After training dataset is properly formatted and merged with subject and activity data, the script would then call the readDataSet(...) function for the testing dataset
-5. When both training dataset and testing dataset are ready, use the rbind() function to combine both training dataset and testing dataset and generate the result dataset named as "allData"
+* Now training dataset is properly formatted and merged with subject and activity data as trainingData, the script would then call the readDataSet(...) function for the testing dataset
+```
+#Read and create testing data
+testingData = readDataSet(labels$measure_name, activityLabels, "testing",
+                          testingDataFile, testingActivityFile, 
+                          testingSubjectFile)
+```
+* When both training dataset and testing dataset are ready, use the rbind() function to combine both training dataset and testing dataset and generate the result dataset named as "allData"
+```
+#combine testing and training dataset
+allData = rbind(trainingData, testingData)
+```
 6. After "allData" dataset is created, the dataset is grouped by subject and activity_name, all measures data are aggregated by the mean function.
-  * meanBySubjectActivity = aggregate(allData[,4:69],list(allData$subject,allData$activity_name), mean)
+```
+meanBySubjectActivity = aggregate(allData[,4:69],list(allData$subject,allData$activity_name), mean)
+```
 7. meanBySubjectActivity dataset is renamed to replace the Group.1 and Group.2 column name to "subject" and "activity_name" respectively
+```
+meanBySubjectActivity = rename(meanBySubjectActivity,subject=Group.1,activity_name=Group.2)
+```
 8. The final data is then sort by subject and activity_name
+```
+meanBySubjectActivity = arrange(meanBySubjectActivity,subject,activity_name)
+```
 9. Final data is extracted with the write.table() function
-
+```
+write.table(meanBySubjectActivity,file="mean_by_subject_activity.txt",row.name=FALSE)
+```
