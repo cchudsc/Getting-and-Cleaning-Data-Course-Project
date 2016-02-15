@@ -67,3 +67,5 @@ allData = rbind(trainingData, testingData)
 meanBySubjectActivity = aggregate(allData[,4:69],list(allData$subject,allData$activity_name), mean)
 meanBySubjectActivity = rename(meanBySubjectActivity,subject=Group.1,activity_name=Group.2)
 meanBySubjectActivity = arrange(meanBySubjectActivity,subject,activity_name)
+
+write.table(meanBySubjectActivity,file="mean_by_subject_activity.txt",row.name=FALSE)
